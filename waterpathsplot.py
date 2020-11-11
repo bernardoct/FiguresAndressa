@@ -4,7 +4,7 @@ from matplotlib import cm, colors, colorbar
 from copy import deepcopy
 import os
 import pandas as pd
-
+from plot_dec_vars import plot_decision_vars
 
 def get_pathways_by_utility_realization(pathways_sol):
     # Reformat utility data
@@ -127,14 +127,17 @@ def create_fixed_length_pathways_array(weeks_vector,
 
 if __name__ == "__main__":
     pathways = []
-    solutions = [21, 34, 35, 44, 199, 240, 249, 288]
-    ### A LINHA ABAIXO GERA O ARRAY ['source 1', 'source 2', ..., 'source 30']. SUBSTITUA A LINHA ABAIXO POR UM ARRAY COM OS NOMES DAS INFRAESTRUTURAS. ###
+    # solutions = [21, 34, 35, 44, 199, 240, 249, 288]
+    solutions = [150]
+    # ### A LINHA ABAIXO GERA O ARRAY ['source 1', 'source 2', ..., 'source 30']. SUBSTITUA A LINHA ABAIXO POR UM ARRAY COM OS NOMES DAS INFRAESTRUTURAS. ###
     sources = np.array(['source {}'.format(s) for s in range(30)])
     utils_ids = [0, 1]
-    files_root_directory = r'C:\Users\Bernardo\Downloads\andressa\completo\\'
+    # files_root_directory = r'C:\Users\Bernardo\Downloads\andressa\completo\\'
+    files_root_directory = r'C:\Users\Bernardo\Downloads\andressa\\'
     for s in solutions:
         pathways_all_utilities = np.loadtxt(
-            files_root_directory + 'Pathways_s{}_original.out'.format(s), # ARQUIVO DE PATHWAYS
+            # files_root_directory + 'Pathways_s{}_original.out'.format(s), # ARQUIVO DE PATHWAYS
+            files_root_directory + 'Pathways_s{}.out'.format(s), # ARQUIVO DE PATHWAYS
             delimiter='\t',
             comments='R',
             dtype=int)
@@ -165,6 +168,24 @@ if __name__ == "__main__":
 
         plot_colormap_pathways(utility_pathways_high_copy[u], 2500, source_colormap_id, solutions[0], solutions[0], 5, ax[0, u], ax[1, 1], cb_pos, sources=sources, cmap_name='tab20c')
 
-    # COMENTE A LINHA ABAIXO E DESCOMENTE A SEGUINTE PARA GERAR UM SVG QUE PODE SER EDITADO NO INKSCAPE.
+    # # COMENTE A LINHA ABAIXO E DESCOMENTE A SEGUINTE PARA GERAR UM SVG QUE PODE SER EDITADO NO INKSCAPE.
     plt.show()
-    # plt.savefig('pathways.svg')
+    # # plt.savefig('pathways.svg')
+
+    # dec_vars_torto = pd.read_csv('completo/decvars_torto.txt', sep=',')
+    # dec_vars_descoberto = pd.read_csv('completo/decvars_descoberto.txt', sep=',')
+    # dec_vars_max_min = {
+    #     'Nome da 1a variável': [0., 1.],  # nome como no arquivo de dados, valor max e min
+    #     'Nome da 2a variável': [5., 100.] 
+    #     }
+    # utilities_names = ['Descoberto', 'Torto']
+
+    # solutions_to_highlight = {}
+    # solutions_to_highlight['colors'] = ['blue', 'red', 'green']
+    # solutions_to_highlight['labels'] = ['essa política', 'aquela política', 'outra política']
+
+    # order_of_plotting_dvs = list(range(20))
+    # plot_decision_vars([dec_vars_torto, dec_vars_descoberto], dec_vars_max_min, files_root_directory,
+    #                    utilities_names, order_of_plotting_dvs,
+    #                    solutions_to_highlight,
+    #                    grid_dims=(3, 3), size=(8.5, 5.5))
